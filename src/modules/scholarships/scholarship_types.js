@@ -1,0 +1,13 @@
+const actionTypes = {
+    /* SAGA */
+    GET_SCHOLARSHIPS: 'GET_SCHOLARSHIPS',
+    GET_SCHOLARSHIP: 'GET_SCHOLARSHIP',
+    ADD_USER_PREFERENCE: 'ADD_USER_PREFERENCE',
+    
+    /* REDUCER */
+    SET_SCHOLARSHIPS: 'SET_SCHOLARSHIPS',
+    SET_SCHOLARSHIP: 'SET_SCHOLARSHIP',
+  };
+  
+  export default actionTypes;
+  
