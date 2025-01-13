@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const Autocomplete = ({ label, options, selectedValues, onChange }) => {
+const Autocomplete = ({ label, placeholder, options, selectedValues, onChange }) => {
   const [inputValue, setInputValue] = useState('');
   const [filteredOptions, setFilteredOptions] = useState([]);
   const [isFocused, setIsFocused] = useState(false);
@@ -73,7 +73,7 @@ const Autocomplete = ({ label, options, selectedValues, onChange }) => {
           onChange={handleInputChange}
           onFocus={handleInputFocus}
           className="flex-grow p-2 border-none focus:ring-0 focus:outline-none"
-          placeholder={`Select ${label}`}
+          placeholder={placeholder}
         />
       </div>
       {isFocused && filteredOptions.length > 0 && (

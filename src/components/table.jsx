@@ -77,6 +77,8 @@ const Table = ({
     setSelectedFilters(updatedFilters);
     setCurrentPage(1); // Reset to first page when filters change
     updateURLParams({ sort: sortKey, filters: updatedFilters }); // Update URL with new filters
+
+    fetchData({ sort: sortKey, page: 1, limit: 5, filters: updatedFilters });
   };
 
   const clearFilters = () => {

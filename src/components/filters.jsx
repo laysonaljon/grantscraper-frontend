@@ -25,6 +25,7 @@ const Filters = ({ onFilter, onClear, filters, selectedFilters }) => {
             key={filter.id}
             label={filter.label}
             options={filter.options}
+            placeholder={filter.placeholder}
             selectedValues={localSelectedFilters[filter.id] || []} // Use local selections for display
             onChange={(values) => handleFilterChange(filter.id, values)} // Update selections without applying yet
           />

@@ -34,14 +34,14 @@ const headerConfig = [
       id: 'level',
       label: 'Level',
       type: 'dropdown',
-      options: ["Basic Education", "Vocational","College", "Doctorate", "Masters"],
+      options: ["basic education", "vocational","college", "doctorate", "masters"],
       placeholder: 'Select Level of degree',
     },
     {
       id: 'type',
       label: 'Type',
       type: 'dropdown',
-      options: ["Athletic", "Merit", "Need-based"],
+      options: ["athletic", "merit", "need-based"],
       placeholder: 'Select Scholarship Type',
     },
   ]

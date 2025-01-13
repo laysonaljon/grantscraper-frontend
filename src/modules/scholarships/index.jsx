@@ -16,7 +16,7 @@ const Scholarships = () => {
         
         // Add filters to params if they exist
         if (filters && Object.keys(filters).length > 0) {
-            const params = { sort, page, limit, filters };
+            params.filters = filters;
         }
 
         dispatch(actions.getScholarships(params));
