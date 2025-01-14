@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Filters from './Filters';
+import Filters from './filters';
 
 const Table = ({
   fetchData,
