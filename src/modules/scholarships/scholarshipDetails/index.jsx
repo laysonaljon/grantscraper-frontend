@@ -1,22 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import actions from '../scholarship_actions';
 import Modal from './modal';
 import Toast from '../../../components/toast';
 
 const ScholarshipDetails = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { scholarshipId } = useParams();
   const scholarship = useSelector((state) => state.scholarships.scholarship);
   const message = useSelector((state) => state.scholarships.message);
   const [isModalOpen, setModalOpen] = useState(false);
   const [isToastVisible, setToastVisible] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [prevUrl, setPrevUrl] = useState(''); // State for previous URL
+  const webUrl = import.meta.env.VITE_WEB_URL.toLowerCase();
 
   // Fetch scholarship details when component mounts
   useEffect(() => {
     dispatch(actions.getScholarship(scholarshipId));
+    
+    // Get the previous URL from document.referrer
+    setPrevUrl(document.referrer);
   }, [dispatch, scholarshipId]);
 
   // Handle message changes to update UI
@@ -43,20 +49,38 @@ const ScholarshipDetails = () => {
   const handleOpenModal = () => setModalOpen(true);
   const handleCloseModal = () => setModalOpen(false);
 
+  const handleBackToTable = () => {
+    const isExternalLink = prevUrl && !prevUrl.startsWith(webUrl);
+
+    if (isExternalLink) {
+      console.log("Navigating to home because previous link is external:", document);
+      navigate('/'); // Navigate to home if the previous link is external
+    } else {
+      console.log("Navigating back to previous page:", history);
+      navigate(-1); // Navigate back to the previous page
+    }
+  };
+
   const handleSubscribe = async (email) => {
     setLoading(true); // Set loading to true on submit
     try {
-      await dispatch(actions.addUserPreference(email, scholarship.level, scholarship.type, scholarshipId));
+      dispatch(actions.addUserPreference(email, scholarship.level, scholarship.type, scholarshipId));
     } catch (error) {
       console.error("Subscription failed:", error); // Handle any errors here
     }
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-white dark:bg-gray-800 rounded-lg space-y-6">
+    <div className="w-full mx-auto p-6 bg-white dark:bg-gray-800 rounded-lg space-y-6">
       {/* Scholarship Information */}
       <div className="flex justify-between items-center p-4 bg-gray-300 dark:bg-gray-700 rounded-lg shadow">
-        <h1 className="text-2xl font-bold text-gray-800 dark:text-white">{scholarship.name}</h1>
+        <button
+          onClick={handleBackToTable}
+          className="mt-0 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition duration-200"
+        >
+          ◄ Back to Table
+        </button>
+        <h2 className="text-2xl font-bold text-gray-800 dark:text-white">{scholarship.name}</h2>
         <button
           onClick={handleOpenModal}
           className="mt-0 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition duration-200"

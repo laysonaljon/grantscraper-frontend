@@ -90,14 +90,14 @@ const Table = ({
       )}
 
       <table className="table-auto w-full text-sm text-left border-collapse rounded-lg overflow-hidden"> 
-        <thead className="text-xs uppercase bg-gray-500 text-white dark:bg-gray-600 dark:text-white">
-          <tr className=" sm:justify-center">
+        <thead className="text-xs uppercase bg-gray-500 text-white dark:bg-gray-600 dark:text-white sticky top-0">
+          <tr>
             {header.map((col) => (
               <th
                 key={col.id}
                 scope="col"
                 className={`px-6 py-3 first:rounded-tl-lg last:rounded-tr-lg ${col.isDesktopOnly ? 'hidden md:table-cell' : ''}`}
-                style={{ width: col.minSize }}
+                style={{ width: col.minSize || "auto" }}
               >
                 <div className="flex items-center justify-center md:justify-start">
                   {col.label}
@@ -127,7 +127,7 @@ const Table = ({
                 <td
                   key={`${item._id}-${col.id}`}
                   className={`px-6 py-4 ${col.isDesktopOnly ? 'hidden md:table-cell' : ''}`}
-                  style={{ width: col.minSize }}
+                  style={{ width: col.minSize || "auto" }}
                 >
                   {col.type === 'date'
                     ? new Intl.DateTimeFormat('en-US', {
