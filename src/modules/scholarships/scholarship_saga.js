@@ -23,7 +23,13 @@ function* getScholarship(action) {
 }
 
 function* addUserPreference(action) {
-  yield call(api.addUserPreference,  action.payload );
+  const response = yield call(api.addUserPreference, action.payload);
+  if (response.status === 200) {
+    yield put({
+      type: actionTypes.SET_MESSAGE,
+      data: response.data,
+    });
+  }
 }
 
 export default function* scholarshipSaga() {

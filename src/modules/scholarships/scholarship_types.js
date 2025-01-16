@@ -7,6 +7,7 @@ const actionTypes = {
     /* REDUCER */
     SET_SCHOLARSHIPS: 'SET_SCHOLARSHIPS',
     SET_SCHOLARSHIP: 'SET_SCHOLARSHIP',
+    SET_MESSAGE: 'SET_MESSAGE',
   };
   
   export default actionTypes;

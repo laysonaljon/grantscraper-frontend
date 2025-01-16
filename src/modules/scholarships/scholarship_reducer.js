@@ -5,6 +5,10 @@ const initialState = {
         items: [],
         meta: {},
     },
+    message: {
+        type:'',
+        message:''
+    }
 };
 
 const scholarshipReducer = (state = initialState, action) => {
@@ -40,7 +44,22 @@ const scholarshipReducer = (state = initialState, action) => {
           return {
               ...state,
               scholarship: action.data || {}, // Set scholarship or default to empty object
-          };
+              message: {
+                type:'',
+                message:''
+              }
+            };
+
+        case actionTypes.SET_MESSAGE: {
+            const { type, message } = action.data || {};
+            return {
+                ...state,
+                message: {
+                    type: type || '', // Replace with `action.data.type`, default to empty string if undefined
+                    message: message || '', // Replace with `action.data.text`, default to empty string if undefined
+                },
+            };
+        }
 
       default:
           return state;

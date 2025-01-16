@@ -3,16 +3,38 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import actions from '../scholarship_actions';
 import Modal from './modal';
+import Toast from '../../../components/toast';
 
 const ScholarshipDetails = () => {
   const dispatch = useDispatch();
   const { scholarshipId } = useParams();
   const scholarship = useSelector((state) => state.scholarships.scholarship);
+  const message = useSelector((state) => state.scholarships.message);
   const [isModalOpen, setModalOpen] = useState(false);
+  const [isToastVisible, setToastVisible] = useState(false);
+  const [loading, setLoading] = useState(false);
 
+  // Fetch scholarship details when component mounts
   useEffect(() => {
     dispatch(actions.getScholarship(scholarshipId));
   }, [dispatch, scholarshipId]);
+
+  // Handle message changes to update UI
+  useEffect(() => {
+    if (message && message.message !== '') {
+      setLoading(false);
+      setToastVisible(true);
+
+      if (message.type === 'success') {
+        setModalOpen(false);
+      }
+
+      const timer = setTimeout(() => {
+        setToastVisible(false);
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [message]);
 
   if (!scholarship) {
     return <p className="text-center text-gray-500">Loading...</p>;
@@ -21,41 +43,49 @@ const ScholarshipDetails = () => {
   const handleOpenModal = () => setModalOpen(true);
   const handleCloseModal = () => setModalOpen(false);
 
-  const handleSubscribe = (email) => {
-    dispatch(actions.addUserPreference(email, scholarship.level, scholarship.type, scholarshipId));
-    handleCloseModal(); // Close the modal after subscription
+  const handleSubscribe = async (email) => {
+    setLoading(true); // Set loading to true on submit
+    try {
+      await dispatch(actions.addUserPreference(email, scholarship.level, scholarship.type, scholarshipId));
+    } catch (error) {
+      console.error("Subscription failed:", error); // Handle any errors here
+    }
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md space-y-6">
-      <h1 className="text-3xl font-bold mb-4 text-gray-800 dark:text-white">Scholarship Details</h1>
-
-      {/* Scholarship Information in Separate Bento Boxes */}
-      <div className="p-4 bg-gray-100 dark:bg-gray-700 rounded-lg shadow">
-        <p><strong>Name:</strong> {scholarship.name}</p>
+    <div className="max-w-4xl mx-auto p-6 bg-white dark:bg-gray-800 rounded-lg space-y-6">
+      {/* Scholarship Information */}
+      <div className="flex justify-between items-center p-4 bg-gray-300 dark:bg-gray-700 rounded-lg shadow">
+        <h1 className="text-2xl font-bold text-gray-800 dark:text-white">{scholarship.name}</h1>
+        <button
+          onClick={handleOpenModal}
+          className="mt-0 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition duration-200"
+        >
+          ♥ Add to Favorite
+        </button>
       </div>
-     
-      {/* Level */}
+
+      {/* Level, Deadline, Type */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="p-4 bg-gray-100 dark:bg-gray-700 rounded-lg shadow">
-          <p><strong>Level:</strong> {scholarship.level}</p>
+        <div className="p-4 bg-gray-300 dark:bg-gray-700 rounded-lg shadow">
+          <p><strong>Level: </strong>{scholarship.level}</p>
         </div>
-        <div className="p-4 bg-gray-100 dark:bg-gray-700 rounded-lg shadow">
-          <p><strong>Deadline:</strong> 
-            { new Intl.DateTimeFormat('en-US', {
-                year: 'numeric',
-                month: '2-digit',
-                day: '2-digit',
-              }).format(new Date(scholarship.deadline))}
+        <div className="p-4 bg-gray-300 dark:bg-gray-700 rounded-lg shadow">
+          <p><strong>Deadline: </strong> 
+            {new Intl.DateTimeFormat('en-US', {
+              year: 'numeric',
+              month: '2-digit',
+              day: '2-digit',
+            }).format(new Date(scholarship.deadline))}
           </p>
         </div>
-        <div className="p-4 bg-gray-100 dark:bg-gray-700 rounded-lg shadow">
-          <p><strong>Type:</strong> {scholarship.type}</p>
+        <div className="p-4 bg-gray-300 dark:bg-gray-700 rounded-lg shadow">
+          <p><strong>Type: </strong>{scholarship.type}</p>
         </div>
       </div>
 
       {/* Eligibility */}
-      <div className="p-4 bg-gray-100 dark:bg-gray-700 rounded-lg shadow">
+      <div className="p-4 bg-gray-300 dark:bg-gray-700 rounded-lg shadow">
         <h2 className="text-xl font-semibold text-gray-800 dark:text-white">Eligibility</h2>
         <ul className="list-disc ml-5">
           {scholarship.eligibility.map((item, index) => (
@@ -65,7 +95,7 @@ const ScholarshipDetails = () => {
       </div>
 
       {/* Benefits */}
-      <div className="p-4 bg-gray-100 dark:bg-gray-700 rounded-lg shadow">
+      <div className="p-4 bg-gray-300 dark:bg-gray-700 rounded-lg shadow">
         <h2 className="text-xl font-semibold text-gray-800 dark:text-white">Benefits</h2>
         <ul className="list-disc ml-5">
           {scholarship.benefits.map((benefit, index) => (
@@ -75,7 +105,7 @@ const ScholarshipDetails = () => {
       </div>
 
       {/* Requirements */}
-      <div className="p-4 bg-gray-100 dark:bg-gray-700 rounded-lg shadow">
+      <div className="p-4 bg-gray-300 dark:bg-gray-700 rounded-lg shadow">
         <h2 className="text-xl font-semibold text-gray-800 dark:text-white">Requirements</h2>
         <ul className="list-disc ml-5">
           {scholarship.requirements.map((requirement, index) => (
@@ -85,7 +115,7 @@ const ScholarshipDetails = () => {
       </div>
 
       {/* Source */}
-      <div className="p-4 bg-gray-100 dark:bg-gray-700 rounded-lg shadow">
+      <div className="p-4 bg-gray-300 dark:bg-gray-700 rounded-lg shadow">
         <h2 className="text-xl font-semibold text-gray-800 dark:text-white">Source</h2>
         <p>
           <a
@@ -99,20 +129,22 @@ const ScholarshipDetails = () => {
         </p>
       </div>
 
-      {/* Subscribe Button */}
-      <button
-        onClick={handleOpenModal}
-        className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition duration-200"
-      >
-        Open Modal
-      </button>
-
       {/* Subscription Modal */}
       <Modal
         isOpen={isModalOpen}
         onClose={handleCloseModal}
         onSubscribe={handleSubscribe}
+        loading={loading} // Pass loading state to Modal
       />
+
+      {/* Toast Notification */}
+      {isToastVisible && (
+        <Toast 
+          message={message.message} 
+          type={message.type} 
+          onClose={() => setToastVisible(false)} 
+        />
+      )}
     </div>
   );
 };

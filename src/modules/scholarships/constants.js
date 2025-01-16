@@ -12,6 +12,7 @@ const headerConfig = [
       minSize: '250px',
       type: 'string',
       sortKey: 'level',
+      isDesktopOnly: true
     },
     {
       id: 3,
@@ -19,6 +20,7 @@ const headerConfig = [
       minSize: '250px',
       type: 'string',
       sortKey: 'type',
+      isDesktopOnly: true
     },
     {
       id: 4,
@@ -26,6 +28,7 @@ const headerConfig = [
       minSize: '250px',
       type: 'date',
       sortKey: 'deadline',
+      isDesktopOnly: true
     },
   ];
 

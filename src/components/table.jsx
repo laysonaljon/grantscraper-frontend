@@ -75,11 +75,10 @@ const Table = ({
 
   return (
     <div className="relative w-full">
-      <h2 className="text-xl font-bold mb-4">{title}</h2>
-
       {filters && filters.length > 0 && (
         <div className="flex justify-between items-center mb-4">
           <Filters 
+            title={title}
             onFilter={setSelectedFilters}
             onClear={() => setSelectedFilters({})}
             filters={filters} 
@@ -92,15 +91,15 @@ const Table = ({
 
       <table className="table-auto w-full text-sm text-left border-collapse rounded-lg overflow-hidden"> 
         <thead className="text-xs uppercase bg-gray-500 text-white dark:bg-gray-600 dark:text-white">
-          <tr>
+          <tr className=" sm:justify-center">
             {header.map((col) => (
               <th
                 key={col.id}
                 scope="col"
-                className="px-6 py-3 first:rounded-tl-lg last:rounded-tr-lg" // Add rounded corners to the first and last cells
+                className={`px-6 py-3 first:rounded-tl-lg last:rounded-tr-lg ${col.isDesktopOnly ? 'hidden md:table-cell' : ''}`}
                 style={{ width: col.minSize }}
               >
-                <div className="flex items-center">
+                <div className="flex items-center justify-center md:justify-start">
                   {col.label}
                   {col.sortKey && (
                     <button
@@ -115,7 +114,7 @@ const Table = ({
             ))}
           </tr>
         </thead>
-        <tbody className="bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200"> {/* Rounded corners on the bottom */}
+        <tbody className="bg-gray-300 text-gray-800 dark:bg-gray-700 dark:text-gray-200">
           {data.map((item, index) => (
             <tr
               key={item._id}
@@ -127,7 +126,7 @@ const Table = ({
               {header.map((col) => (
                 <td
                   key={`${item._id}-${col.id}`}
-                  className="px-6 py-4"
+                  className={`px-6 py-4 ${col.isDesktopOnly ? 'hidden md:table-cell' : ''}`}
                   style={{ width: col.minSize }}
                 >
                   {col.type === 'date'
@@ -141,20 +140,23 @@ const Table = ({
               ))}
             </tr>
           ))}
+
+          {/* Load More Row */}
+          {meta.next_page !== null && (
+            <tr
+              className="cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-600"
+              onClick={() => setCurrentPage((prev) => prev + 1)}
+            >
+              <td
+                colSpan={header.length} // Always spans all columns
+                className="px-6 py-4 text-center text-blue-500"
+              >
+                Load More
+              </td>
+            </tr>
+          )}
         </tbody>
       </table>
-
-
-      {meta.next_page !== null && (
-        <div className="flex justify-center mt-4">
-          <span
-            className="text-blue-500 cursor-pointer hover:underline"
-            onClick={() => setCurrentPage((prev) => prev + 1)}
-          >
-            Load More
-          </span>
-        </div>
-      )}
     </div>
   );
 };
