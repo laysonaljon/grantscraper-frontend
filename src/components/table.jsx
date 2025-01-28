@@ -129,7 +129,7 @@ const Table = ({
                   className={`px-6 py-4 ${col.isDesktopOnly ? 'hidden md:table-cell' : ''}`}
                   style={{ width: col.minSize || "auto" }}
                 >
-                  {col.type === 'date'
+                  {col.type === 'date' && item[col.sortKey] !== 'Ongoing'
                     ? new Intl.DateTimeFormat('en-US', {
                         year: 'numeric',
                         month: '2-digit',

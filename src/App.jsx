@@ -10,7 +10,7 @@ function App() {
     <div className="flex flex-col min-h-screen"> {/* Full height of the viewport */}
       <Router>
         <Header />
-        <main className="flex-1 flex flex-col"> {/* Flexible main content area */}
+        <main className="flex-1 flex flex-col p-4"> {/* Flexible main content area */}
           <Routes>
             <Route path="/" element={<Scholarships />} />
             <Route path="/:scholarshipId" element={<ScholarshipDetails />} />

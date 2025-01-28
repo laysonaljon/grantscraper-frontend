@@ -28,18 +28,16 @@ const Scholarships = () => {
     };
 
     return (
-        <div className="p-4">
-            <Table
-                fetchData={fetchData}
-                data={scholarships.items}
-                meta={scholarships.meta}
-                header={constants.headerConfig}
-                title="Scholarships"
-                onRowClick={handleRowClick}
-                sort='deadline'
-                filters={constants.filterOptions}
-            />
-        </div>
+        <Table
+            fetchData={fetchData}
+            data={scholarships.items}
+            meta={scholarships.meta}
+            header={constants.headerConfig}
+            title="Scholarships"
+            onRowClick={handleRowClick}
+            sort='deadline'
+            filters={constants.filterOptions}
+        />
     );
 };
 

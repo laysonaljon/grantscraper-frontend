@@ -50,13 +50,9 @@ const ScholarshipDetails = () => {
   const handleCloseModal = () => setModalOpen(false);
 
   const handleBackToTable = () => {
-    const isExternalLink = prevUrl && !prevUrl.startsWith(webUrl);
-
-    if (isExternalLink) {
-      console.log("Navigating to home because previous link is external:", document);
+    if (history.length === 1) {
       navigate('/'); // Navigate to home if the previous link is external
     } else {
-      console.log("Navigating back to previous page:", history);
       navigate(-1); // Navigate back to the previous page
     }
   };
@@ -71,7 +67,7 @@ const ScholarshipDetails = () => {
   };
 
   return (
-    <div className="w-full mx-auto p-6 bg-white dark:bg-gray-800 rounded-lg space-y-6">
+    <div className="w-full mx-auto rounded-lg space-y-6">
       {/* Scholarship Information */}
       <div className="flex justify-between items-center p-4 bg-gray-300 dark:bg-gray-700 rounded-lg shadow">
         <button
@@ -95,12 +91,16 @@ const ScholarshipDetails = () => {
           <p><strong>Level: </strong>{scholarship.level}</p>
         </div>
         <div className="p-4 bg-gray-300 dark:bg-gray-700 rounded-lg shadow">
-          <p><strong>Deadline: </strong> 
-            {new Intl.DateTimeFormat('en-US', {
+          <p>
+            <strong>Deadline: </strong>
+            {scholarship.deadline === 'Ongoing' ? 'Ongoing' : new Intl.DateTimeFormat('en-US', {
               year: 'numeric',
-              month: '2-digit',
-              day: '2-digit',
-            }).format(new Date(scholarship.deadline))}
+              month: 'long', // Use 'long' for full month name
+              day: 'numeric', // Use 'numeric' for non-padded day
+            }).format(new Date(scholarship.deadline))} 
+            {scholarship.deadline !== 'Ongoing' ? ` (${Math.ceil(
+              (new Date(scholarship.deadline) - new Date()) / (1000 * 60 * 60 * 24)
+            )} days to go)` : ''}
           </p>
         </div>
         <div className="p-4 bg-gray-300 dark:bg-gray-700 rounded-lg shadow">
@@ -109,49 +109,68 @@ const ScholarshipDetails = () => {
       </div>
 
       {/* Eligibility */}
-      <div className="p-4 bg-gray-300 dark:bg-gray-700 rounded-lg shadow">
-        <h2 className="text-xl font-semibold text-gray-800 dark:text-white">Eligibility</h2>
-        <ul className="list-disc ml-5">
-          {scholarship.eligibility.map((item, index) => (
-            <li key={index} className="text-gray-700 dark:text-gray-300">{item}</li>
-          ))}
-        </ul>
-      </div>
+      {scholarship.description && (
+        <div className="p-4 bg-gray-300 dark:bg-gray-700 rounded-lg shadow">
+          <h2 className="text-xl font-semibold text-gray-800 dark:text-white">Description</h2>
+          <ul className="list-disc ml-5">
+            {scholarship.description}
+          </ul>
+        </div>
+      )}
+
+      {/* Eligibility */}
+      {scholarship.eligibility && scholarship.eligibility.length > 0 && (
+        <div className="p-4 bg-gray-300 dark:bg-gray-700 rounded-lg shadow">
+          <h2 className="text-xl font-semibold text-gray-800 dark:text-white">Eligibility</h2>
+          <ul className="list-disc ml-5">
+            {scholarship.eligibility.map((item, index) => (
+              <li key={index} className="text-gray-700 dark:text-gray-300">{item}</li>
+            ))}
+          </ul>
+        </div>
+      )}
 
       {/* Benefits */}
-      <div className="p-4 bg-gray-300 dark:bg-gray-700 rounded-lg shadow">
-        <h2 className="text-xl font-semibold text-gray-800 dark:text-white">Benefits</h2>
-        <ul className="list-disc ml-5">
-          {scholarship.benefits.map((benefit, index) => (
-            <li key={index} className="text-gray-700 dark:text-gray-300">{benefit}</li>
-          ))}
-        </ul>
-      </div>
+      {scholarship.benefits && scholarship.benefits.length > 0 && (
+        <div className="p-4 bg-gray-300 dark:bg-gray-700 rounded-lg shadow">
+          <h2 className="text-xl font-semibold text-gray-800 dark:text-white">Benefits</h2>
+          <ul className="list-disc ml-5">
+            {scholarship.benefits.map((benefit, index) => (
+              <li key={index} className="text-gray-700 dark:text-gray-300">{benefit}</li>
+            ))}
+          </ul>
+        </div>
+      )}
 
       {/* Requirements */}
-      <div className="p-4 bg-gray-300 dark:bg-gray-700 rounded-lg shadow">
-        <h2 className="text-xl font-semibold text-gray-800 dark:text-white">Requirements</h2>
-        <ul className="list-disc ml-5">
-          {scholarship.requirements.map((requirement, index) => (
-            <li key={index} className="text-gray-700 dark:text-gray-300">{requirement}</li>
-          ))}
-        </ul>
-      </div>
+      {scholarship.requirements && scholarship.requirements.length > 0 && (
+        <div className="p-4 bg-gray-300 dark:bg-gray-700 rounded-lg shadow">
+          <h2 className="text-xl font-semibold text-gray-800 dark:text-white">Requirements</h2>
+          <ul className="list-disc ml-5">
+            {scholarship.requirements.map((requirement, index) => (
+              <li key={index} className="text-gray-700 dark:text-gray-300">{requirement}</li>
+            ))}
+          </ul>
+        </div>
+      )}
 
       {/* Source */}
-      <div className="p-4 bg-gray-300 dark:bg-gray-700 rounded-lg shadow">
-        <h2 className="text-xl font-semibold text-gray-800 dark:text-white">Source</h2>
-        <p>
-          <a
-            href={scholarship.source.link}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-blue-500 hover:underline"
-          >
-            {scholarship.source.site}
-          </a>
-        </p>
-      </div>
+      {scholarship.source && scholarship.source.link && scholarship.source.site && (
+        <div className="p-4 bg-gray-300 dark:bg-gray-700 rounded-lg shadow">
+          <h2 className="text-xl font-semibold text-gray-800 dark:text-white">Source</h2>
+          <p>
+            <a
+              href={scholarship.source.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-500 hover:underline"
+            >
+              {scholarship.source.site}
+            </a>
+          </p>
+        </div>
+      )}
+
 
       {/* Subscription Modal */}
       <Modal
