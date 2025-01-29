@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { HashRouter as Router, Route, Routes } from 'react-router-dom';
 import Scholarships from './modules/scholarships';
 import ScholarshipDetails from './modules/scholarships/scholarshipDetails';
 import { About, Disclaimer, Privacy, Terms } from './modules/miscPages';
