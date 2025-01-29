@@ -14,18 +14,11 @@ const ScholarshipDetails = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [isToastVisible, setToastVisible] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [prevUrl, setPrevUrl] = useState(''); // State for previous URL
-  const webUrl = import.meta.env.VITE_WEB_URL.toLowerCase();
 
-  // Fetch scholarship details when component mounts
   useEffect(() => {
     dispatch(actions.getScholarship(scholarshipId));
-    
-    // Get the previous URL from document.referrer
-    setPrevUrl(document.referrer);
   }, [dispatch, scholarshipId]);
 
-  // Handle message changes to update UI
   useEffect(() => {
     if (message && message.message !== '') {
       setLoading(false);
