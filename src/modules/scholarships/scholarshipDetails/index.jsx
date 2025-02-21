@@ -86,14 +86,24 @@ const ScholarshipDetails = () => {
         <div className="p-4 bg-gray-300 dark:bg-gray-700 rounded-lg shadow">
           <p>
             <strong>Deadline: </strong>
-            {scholarship.deadline === 'Ongoing' ? 'Ongoing' : new Intl.DateTimeFormat('en-US', {
-              year: 'numeric',
-              month: 'long', // Use 'long' for full month name
-              day: 'numeric', // Use 'numeric' for non-padded day
-            }).format(new Date(scholarship.deadline))} 
-            {scholarship.deadline !== 'Ongoing' ? ` (${Math.ceil(
-              (new Date(scholarship.deadline) - new Date()) / (1000 * 60 * 60 * 24)
-            )} days to go)` : ''}
+            {scholarship.deadline === 'Ongoing' || scholarship.deadline === 'Passed' 
+              ? scholarship.deadline  
+              : (() => {
+                  const deadlineDate = new Date(scholarship.deadline);
+                  const today = new Date();
+                  const daysDifference = Math.ceil((deadlineDate - today) / (1000 * 60 * 60 * 24));
+                  
+                  const formattedDate = new Intl.DateTimeFormat('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: '2-digit',
+                  }).format(deadlineDate);
+
+                  return daysDifference > 0
+                    ? `${formattedDate} (${daysDifference} days to go)`
+                    : `${formattedDate} (Passed ${Math.abs(daysDifference)} days ago)`;
+                })()
+            }
           </p>
         </div>
         <div className="p-4 bg-gray-300 dark:bg-gray-700 rounded-lg shadow">
@@ -101,13 +111,18 @@ const ScholarshipDetails = () => {
         </div>
       </div>
 
-      {/* Eligibility */}
+      {/* Description */}
       {scholarship.description && (
         <div className="p-4 bg-gray-300 dark:bg-gray-700 rounded-lg shadow">
           <h2 className="text-xl font-semibold text-gray-800 dark:text-white">Description</h2>
-          <ul className="list-disc ml-5">
-            {scholarship.description}
-          </ul>
+          <p className="text-gray-700 dark:text-gray-300">
+            {scholarship.description.split('\n').map((line, index) => (
+              <span key={index}>
+                {line}
+                <br /> {/* Add a line break for each new line */}
+              </span>
+            ))}
+          </p>
         </div>
       )}
 
@@ -116,9 +131,25 @@ const ScholarshipDetails = () => {
         <div className="p-4 bg-gray-300 dark:bg-gray-700 rounded-lg shadow">
           <h2 className="text-xl font-semibold text-gray-800 dark:text-white">Eligibility</h2>
           <ul className="list-disc ml-5">
-            {scholarship.eligibility.map((item, index) => (
-              <li key={index} className="text-gray-700 dark:text-gray-300">{item}</li>
-            ))}
+            {scholarship.eligibility.map((item, index) => {
+              if (typeof item === 'string') {
+                return (
+                  <li key={index} className="text-gray-700 dark:text-gray-300">{item}</li>
+                );
+              } else if (typeof item === 'object' && item.title && item.items) {
+                return (
+                  <li key={index} className="text-gray-700 dark:text-gray-300">
+                    {item.title}
+                    <ul className="list-disc ml-5">
+                      {item.items.map((subItem, subIndex) => (
+                        <li key={subIndex} className="text-gray-700 dark:text-gray-300">{subItem}</li>
+                      ))}
+                    </ul>
+                  </li>
+                );
+              }
+              return null;
+            })}
           </ul>
         </div>
       )}
@@ -140,9 +171,25 @@ const ScholarshipDetails = () => {
         <div className="p-4 bg-gray-300 dark:bg-gray-700 rounded-lg shadow">
           <h2 className="text-xl font-semibold text-gray-800 dark:text-white">Requirements</h2>
           <ul className="list-disc ml-5">
-            {scholarship.requirements.map((requirement, index) => (
-              <li key={index} className="text-gray-700 dark:text-gray-300">{requirement}</li>
-            ))}
+            {scholarship.requirements.map((requirement, index) => {
+              if (typeof requirement === 'string') {
+                return (
+                  <li key={index} className="text-gray-700 dark:text-gray-300">{requirement}</li>
+                );
+              } else if (typeof requirement === 'object' && requirement.title && requirement.items) {
+                return (
+                  <li key={index} className="text-gray-700 dark:text-gray-300">
+                    {requirement.title}
+                    <ul className="list-disc ml-5">
+                      {requirement.items.map((subItem, subIndex) => (
+                        <li key={subIndex} className="text-gray-700 dark:text-gray-300">{subItem}</li>
+                      ))}
+                    </ul>
+                  </li>
+                );
+              }
+              return null;
+            })}
           </ul>
         </div>
       )}
@@ -161,9 +208,27 @@ const ScholarshipDetails = () => {
               {scholarship.source.site}
             </a>
           </p>
+
+          {/* Buttons for Related Links */}
+          <div className="mt-4">
+            {scholarship.misc && scholarship.misc.length > 0 ? (
+              scholarship.misc.map((item, index) => (
+                <a
+                  key={index} // Unique key for each item
+                  href={item.data} // Assuming 'data' holds the URL
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block mb-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition duration-200"
+                >
+                  {item.type} {/* Displaying the type as button text */}
+                </a>
+              ))
+            ) : (
+              <p>No additional resources available.</p>
+            )}
+          </div>
         </div>
       )}
-
 
       {/* Subscription Modal */}
       <Modal

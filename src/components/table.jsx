@@ -44,12 +44,12 @@ const Table = ({
 
     setSelectedFilters(initialFilters);
 
-    fetchData({ sort: initialSortKey, page: currentPage, limit: 5, filters: initialFilters });
+    fetchData({ sort: initialSortKey, page: currentPage, limit: 20, filters: initialFilters });
   }, []);
 
   useEffect(() => {
     if (sortKey) {
-      fetchData({ sort: sortKey, page: currentPage, limit: 5, filters: selectedFilters });
+      fetchData({ sort: sortKey, page: currentPage, limit: 20, filters: selectedFilters });
       updateURLParams({ sort: sortKey, filters: selectedFilters });
     }
   }, [sortKey, currentPage, selectedFilters]);
