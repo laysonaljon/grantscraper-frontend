@@ -32,8 +32,16 @@ function* addUserPreference(action) {
   }
 }
 
+function* clearMessage() {
+  yield put({
+    type: actionTypes.SET_MESSAGE,
+    data:  {type: "", message: "" },
+  });
+}
+
 export default function* scholarshipSaga() {
   yield takeEvery(actionTypes.GET_SCHOLARSHIPS, getScholarships);
   yield takeEvery(actionTypes.GET_SCHOLARSHIP, getScholarship);
   yield takeEvery(actionTypes.ADD_USER_PREFERENCE, addUserPreference);
+  yield takeEvery(actionTypes.CLEAR_MESSAGE, clearMessage);
 }

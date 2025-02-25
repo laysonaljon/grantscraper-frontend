@@ -55,8 +55,8 @@ const scholarshipReducer = (state = initialState, action) => {
             return {
                 ...state,
                 message: {
-                    type: type || '', // Replace with `action.data.type`, default to empty string if undefined
-                    message: message || '', // Replace with `action.data.text`, default to empty string if undefined
+                    type: type || '',
+                    message: message || '',
                 },
             };
         }

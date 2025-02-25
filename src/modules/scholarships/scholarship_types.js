@@ -8,6 +8,7 @@ const actionTypes = {
     SET_SCHOLARSHIPS: 'SET_SCHOLARSHIPS',
     SET_SCHOLARSHIP: 'SET_SCHOLARSHIP',
     SET_MESSAGE: 'SET_MESSAGE',
+    CLEAR_MESSAGE: 'CLEAR_MESSAGE',
   };
   
   export default actionTypes;

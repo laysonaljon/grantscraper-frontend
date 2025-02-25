@@ -15,7 +15,6 @@ const Modal = ({ isOpen, onClose, onSubscribe, loading }) => {
     if (validateEmail(email)) {
       onSubscribe(email);
       setEmail('');
-      onClose();
     } else {
       setError('Please enter a valid email address.');
     }

@@ -15,8 +15,13 @@ const addUserPreference = (email, level, type, scholarship_id) => ({
   payload: { email, level, type, scholarship_id },
 });
 
+const clearMessage = () => ({
+  type: actionTypes.CLEAR_MESSAGE,
+}) 
+
 export default {
   getScholarships,
   getScholarship,
   addUserPreference,
+  clearMessage
 };
