@@ -44,7 +44,7 @@ const Autocomplete = ({ label, placeholder, options, selectedValues, onChange })
 
   return (
     <div className="relative mb-4" onBlur={handleBlur} tabIndex={-1}>
-      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">{label}</label>
+      <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300">{label}</label>
       <div
         className="flex items-center mt-1 border border-gray-300 rounded-md shadow-sm overflow-x-auto bg-white dark:bg-gray-800"
         style={{ whiteSpace: "nowrap", height: "50px" }}

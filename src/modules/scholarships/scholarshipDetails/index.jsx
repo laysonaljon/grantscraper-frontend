@@ -229,38 +229,30 @@ const ScholarshipDetails = () => {
         </div>
       )}
 
-      {/* Source */}
+      {/* Related Links */}
       {scholarship.source && scholarship.source.link && scholarship.source.site && (
         <div className="p-4 bg-gray-300 dark:bg-gray-700 rounded-lg shadow">
-          <h2 className="text-xl font-semibold text-gray-800 dark:text-white">Source</h2>
-          <p>
+          <h2 className="text-xl font-semibold text-gray-800 dark:text-white">Related Links</h2>
+          <div className="flex flex-wrap justify-start mt-2">
             <a
               href={scholarship.source.link}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-blue-500 hover:underline"
+              className="inline-block mb-2 mx-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition duration-200"
             >
-              {scholarship.source.site}
+              Source: {scholarship.source.site}
             </a>
-          </p>
-
-          {/* Buttons for Related Links */}
-          <div className="mt-4">
-            {scholarship.misc && scholarship.misc.length > 0 ? (
-              scholarship.misc.map((item, index) => (
-                <a
-                  key={index} // Unique key for each item
-                  href={item.data} // Assuming 'data' holds the URL
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-block mb-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition duration-200"
-                >
-                  {item.type} {/* Displaying the type as button text */}
-                </a>
-              ))
-            ) : (
-              <p>No additional resources available.</p>
-            )}
+            {scholarship.misc && scholarship.misc.length > 0 && scholarship.misc.map((item, index) => (
+              <a
+                key={index} // Unique key for each item
+                href={item.data} // Assuming 'data' holds the URL
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block mb-2 mx-2 px-4 py-2 bg-green-600 text-white rounded hover:bg-blue-600 transition duration-200"
+              >
+                {item.type} {/* Displaying the type as button text */}
+              </a>
+            ))}
           </div>
         </div>
       )}

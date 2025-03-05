@@ -35,7 +35,7 @@ const Filters = ({
               <Autocomplete
                 label={filter.label}
                 options={filter.options}
-                placeholder={filter.placeholder || 'Select suburb...'}
+                placeholder={filter.placeholder}
                 selectedValues={localSelectedFilters[filter.id] || []}
                 onChange={(values) => handleFilterChange(filter.id, values)}
                 className="w-full"
