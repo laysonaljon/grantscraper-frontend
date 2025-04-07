@@ -44,7 +44,7 @@ const ScholarshipDetails = () => {
 
   useEffect(() => {
     dispatch(actions.getScholarship(scholarshipId));
-  }, [dispatch, scholarshipId]);
+  });
 
   useEffect(() => {
     if (message && message.message !== '') {
