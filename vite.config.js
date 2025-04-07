@@ -9,5 +9,6 @@ export default defineConfig({
     mimeTypes: {
       js: 'application/javascript',
     },
+    historyApiFallback: true,
   },
 })
