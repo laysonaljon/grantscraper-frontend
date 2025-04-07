@@ -35,7 +35,7 @@ const Modal = ({ isOpen, onClose, onSubscribe, loading }) => {
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-75 dark:bg-gray-900 dark:bg-opacity-75">
       <div className="w-104 rounded-lg shadow-lg bg-white text-gray-800 max-w-md dark:bg-gray-800 dark:text-white border border-gray-300 dark:border-gray-600">
         <div className="px-6 py-4 border-b flex justify-between items-center">
-          <h2 className="text-xl font-semibold">Subscribe for Updates</h2>
+          <h2 className="text-xl font-semibold">Add to Favorite</h2>
           <button
             onClick={onClose}
             className="text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-white"

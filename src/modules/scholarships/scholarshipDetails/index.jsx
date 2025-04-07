@@ -91,10 +91,10 @@ const ScholarshipDetails = () => {
   return (
     <div className="w-full mx-auto rounded-lg space-y-6">
       {/* Scholarship Information */}
-      <div className="flex justify-between items-center p-4 bg-gray-300 dark:bg-gray-700 rounded-lg shadow">
+      <div className="flex md:justify-between sm:justify-center items-center p-4 bg-gray-300 dark:bg-gray-700 rounded-lg shadow">
         <button
           onClick={handleBackToTable}
-          className="mr-10 mt-0 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition duration-200"
+          className="hidden md:block mt-0 px-4 py-2 min-w-48 bg-blue-500 text-white rounded hover:bg-blue-600 transition duration-200"
         >
           <span className="hidden md:inline">◄ Back to Table</span>
           <span className="md:hidden">◄</span>
@@ -102,7 +102,7 @@ const ScholarshipDetails = () => {
         <h2 className="text-2xl text-center font-bold text-gray-800 dark:text-white">{scholarship.name}</h2>
         <button
           onClick={handleOpenModal}
-          className="ml-10 mt-0 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition duration-200"
+          className="hidden md:block ml-10 mt-0 px-4 py-2 min-w-48 bg-red-500 text-white rounded hover:bg-red-600 transition duration-200"
         >
           <span className="hidden md:inline">♥ Add to Favorite</span>
           <span className="md:hidden">♥</span>
@@ -238,21 +238,29 @@ const ScholarshipDetails = () => {
               href={scholarship.source.link}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-block mb-2 mx-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition duration-200"
-            >
+              className="w-full sm:w-auto inline-block mb-2 mx-2 px-4 py-2 bg-blue-500 text-white text-center rounded hover:bg-blue-600 transition duration-200"
+              >
               Source: {scholarship.source.site}
             </a>
-            {scholarship.misc && scholarship.misc.length > 0 && scholarship.misc.map((item, index) => (
-              <a
-                key={index} // Unique key for each item
-                href={item.data} // Assuming 'data' holds the URL
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-block mb-2 mx-2 px-4 py-2 bg-green-600 text-white rounded hover:bg-blue-600 transition duration-200"
-              >
-                {item.type} {/* Displaying the type as button text */}
-              </a>
-            ))}
+            {scholarship.misc && scholarship.misc.length > 0 && (
+              scholarship.misc.map((item, index) => {
+                if (item.data && item.type) {
+                  return (
+                    <a
+                    key={index}
+                    href={item.data}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full sm:w-auto inline-block mb-2 mx-2 px-4 py-2 bg-green-600 text-white rounded hover:bg-blue-600 transition duration-200"
+                  >
+                    {item.type}
+                  </a>
+                  
+                  );
+                }
+                return null; // Don't render anything if data or type is missing
+              })
+            )}
           </div>
         </div>
       )}
