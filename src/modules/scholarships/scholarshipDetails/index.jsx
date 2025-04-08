@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import actions from '../scholarship_actions';
 import Modal from './modal';
 import Toast from '../../../components/toast';
@@ -8,7 +8,7 @@ import Toast from '../../../components/toast';
 const ScholarshipDetails = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const scholarshipId = window.location.pathname.split('/').filter(Boolean).pop();
+  const { scholarshipId } = useParams();
   const scholarship = useSelector((state) => state.scholarships.scholarship);
   const message = useSelector((state) => state.scholarships.message);
   const [isModalOpen, setModalOpen] = useState(false);
@@ -44,7 +44,7 @@ const ScholarshipDetails = () => {
 
   useEffect(() => {
     dispatch(actions.getScholarship(scholarshipId));
-  });
+  }, [dispatch, scholarshipId]);
 
   useEffect(() => {
     if (message && message.message !== '') {
