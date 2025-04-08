@@ -9,6 +9,5 @@ export default defineConfig({
     mimeTypes: {
       js: 'application/javascript',
     },
-    "rewrites":  [ {"source": "/(.*)", "destination": "/"} ]
   },
 })
