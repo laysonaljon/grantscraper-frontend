@@ -47,6 +47,10 @@ class Api {
     return post(`/users/subscribe/`, payload);
   }
 
+  static searchKeyword(keyword) {
+    return get(`/scholarships/search?keyword=${keyword}`);
+  }
+
 }
 
 export default Api;

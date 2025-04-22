@@ -1,17 +1,22 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import logo from './../assets/logo.png';
+import SearchBar from './searchbar';
 
 const Header = () => {
   return (
-    <header className="px-4 pt-4">
-      <div className="flex items-center p-4 justify-center bg-gray-300 dark:bg-gray-700 rounded-lg">
-        <Link to="/" className="flex items-center">
-          <img src={logo} alt="GrantScraper Logo" className="h-10" />
-          <h1 className="text-xl font-bold text-gray-800 dark:text-gray-200 ml-4">
-            GrantScraper
-          </h1>
-        </Link>
+    <header className="px-4 pt-4 relative z-10">
+      <div className="flex flex-col p-4 justify-between bg-gray-300 dark:bg-gray-700 rounded-lg">
+        <div className="flex flex-col md:flex-row md:items-center w-full gap-4">
+          
+          <div className="w-full md:w-auto flex justify-center">
+            <Link to="/" className="flex items-center justify-center">
+              <img src={logo} alt="GrantScraper Logo" className="h-20 w-72 md:p-2" />
+            </Link>
+          </div>
+
+          <SearchBar />
+        </div>
       </div>
     </header>
   );

@@ -70,9 +70,8 @@ const Autocomplete = ({ label, placeholder, options, selectedValues, onChange })
           value={inputValue}
           onChange={handleInputChange}
           onFocus={handleInputFocus}
-          className="flex-grow p-2 border-none focus:ring-0 focus:outline-none bg-transparent text-black dark:text-white"
+          className="flex-grow p-2 border-none focus:ring-0 focus:outline-none bg-transparent text-black dark:text-white h-full"
           placeholder={placeholder}
-          style={{ minWidth: "50px", height: "100%" }}
         />
       </div>
       {isFocused && (
