@@ -1,5 +1,3 @@
-import React from 'react';
-
 const TermsOfUse = () => {
   return (
     <div className="flex flex-col rounded-lg items-center justify-center bg-gray-300 dark:bg-gray-800 h-full w-full">

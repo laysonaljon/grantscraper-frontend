@@ -1,5 +1,3 @@
-import React from 'react';
-
 const About = () => {
   return (
     <div className="flex flex-col rounded-lg items-center justify-center bg-gray-300 dark:bg-gray-800 h-full w-full"> {/* Full height and width of parent */}

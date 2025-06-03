@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 const Autocomplete = ({ label, placeholder, options, selectedValues, onChange }) => {
   const [inputValue, setInputValue] = useState("");

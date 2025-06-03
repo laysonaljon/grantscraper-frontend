@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
 import actions from '../scholarship_actions';
 import Modal from './modal';
 import Toast from '../../../components/toast';
+import Loading from '../../../components/loading';
 
 const ScholarshipDetails = () => {
   const dispatch = useDispatch();
@@ -13,7 +14,7 @@ const ScholarshipDetails = () => {
   const message = useSelector((state) => state.scholarships.message);
   const [isModalOpen, setModalOpen] = useState(false);
   const [isToastVisible, setToastVisible] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true); // Set initial loading state to true
 
   function processRequirementText(text) {
     // Regex to extract only the href and link text from an anchor tag
@@ -43,12 +44,19 @@ const ScholarshipDetails = () => {
   }
 
   useEffect(() => {
+    setLoading(true); // Set loading to true when fetching new scholarship details
     dispatch(actions.getScholarship(scholarshipId));
   }, [dispatch, scholarshipId]);
 
   useEffect(() => {
+    if (scholarship) {
+      setLoading(false); // Set loading to false once scholarship data is available
+    }
+  }, [scholarship]);
+
+  useEffect(() => {
     if (message && message.message !== '') {
-      setLoading(false);
+      setLoading(false); // Also stop loading if a message (success/error) comes through
       setToastVisible(true);
 
       if (message.type === 'success') {
@@ -57,14 +65,19 @@ const ScholarshipDetails = () => {
 
       const timer = setTimeout(() => {
         setToastVisible(false);
-        dispatch(actions.clearMessage())
+        dispatch(actions.clearMessage());
       }, 3000);
       return () => clearTimeout(timer);
     }
-  }, [message]);
+  }, [message, dispatch]); // Added dispatch to dependency array
 
+  if (loading) {
+    return <Loading />; // Render the Loading component when loading is true
+  }
+
+  // If scholarship is null after loading (e.g., ID not found), display a message
   if (!scholarship) {
-    return <p className="text-center text-gray-500">Loading...</p>;
+    return <p className="text-center text-gray-500">Scholarship not found.</p>;
   }
 
   const handleOpenModal = () => setModalOpen(true);
@@ -79,12 +92,13 @@ const ScholarshipDetails = () => {
   };
 
   const handleSubscribe = async (email) => {
-    setLoading(true);
+    setLoading(true); // Set loading to true when subscribing
     try {
       dispatch(actions.addUserPreference(email, scholarship.level, scholarship.type, scholarshipId));
-      handleCloseModal
+      // handleCloseModal is handled by the useEffect for messages
     } catch (error) {
       console.error("Subscription failed:", error);
+      setLoading(false); // Ensure loading is stopped even on error
     }
   };
 
@@ -168,7 +182,6 @@ const ScholarshipDetails = () => {
                   const deadlineDate = new Date(scholarship.deadline);
                   const today = new Date();
                   const daysDifference = Math.ceil((deadlineDate - today) / (1000 * 60 * 60 * 24));
-                  
                   const formattedDate = new Intl.DateTimeFormat('en-US', {
                     year: 'numeric',
                     month: 'long',
@@ -300,7 +313,6 @@ const ScholarshipDetails = () => {
                   >
                     {item.type}
                   </a>
-                  
                   );
                 }
                 return null; // Don't render anything if data or type is missing
