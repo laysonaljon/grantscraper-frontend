@@ -89,23 +89,68 @@ const ScholarshipDetails = () => {
   };
 
   return (
-    <div className="w-full mx-auto rounded-lg space-y-6">
-      {/* Scholarship Information */}
-      <div className="flex md:justify-between sm:justify-center items-center p-4 bg-gray-300 dark:bg-gray-700 rounded-lg shadow">
+    <div className="w-full mx-auto rounded-lg space-y-4">
+      {/* Main header div - contains title and desktop-specific buttons */}
+      {/* On desktop (lg and up), buttons are justified between. On smaller, title is centered. */}
+      <div className="flex sm:justify-center md:justify-center lg:justify-between items-center p-4 bg-gray-300 dark:bg-gray-700 rounded-lg shadow">
+        {/* Back button for desktop (visible only on lg and up) */}
         <button
           onClick={handleBackToTable}
-          className="hidden md:block mt-0 px-4 py-2 min-w-48 bg-blue-500 text-white rounded hover:bg-blue-600 transition duration-200"
+          className="hidden lg:block mt-0 px-4 py-2 min-w-48 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition duration-200 shadow-md"
         >
-          <span className="hidden md:inline justify-between">◄ Back</span>
-          <span className="md:hidden">◄</span>
+          <span>◄ Back</span>
         </button>
-        <h2 className="text-2xl text-center font-bold text-gray-800 dark:text-white">{scholarship.name}</h2>
+
+        {/* Scholarship Name (always visible, centered on small and medium screens) */}
+        <h2 className="text-2xl text-center font-bold text-gray-800 dark:text-white flex-grow md:flex-grow-0">
+          {scholarship.name}
+        </h2>
+
+        {/* Favorite button for desktop (visible only on lg and up) */}
         <button
           onClick={handleOpenModal}
-          className="hidden md:block ml-10 mt-0 px-4 py-2 min-w-48 bg-red-500 text-white rounded hover:bg-red-600 transition duration-200"
+          className="hidden lg:block ml-10 mt-0 px-4 py-2 min-w-48 bg-red-500 text-white rounded-lg hover:bg-red-600 transition duration-200 shadow-md"
         >
-          <span className="hidden md:inline">♥ Favorite</span>
-          <span className="md:hidden">♥</span>
+          <span>♥ Favorite</span>
+        </button>
+      </div>
+
+      {/* Container for Tablet and Mobile buttons - hidden on large screens (lg and up) */}
+      <div className="flex justify-center gap-x-1 lg:hidden">
+        {/* Back button for Tablet (md) - shows text, half width */}
+        <button
+          onClick={handleBackToTable}
+          className="hidden sm:hidden md:block w-1/2 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition duration-200 shadow-md text-lg"
+          aria-label="Back"
+        >
+          <span>◄ Back</span>
+        </button>
+
+        {/* Favorite button for Tablet (md) - shows text, half width */}
+        <button
+          onClick={handleOpenModal}
+          className="hidden sm:hidden md:block w-1/2 py-3 bg-red-500 text-white rounded-lg hover:bg-red-600 transition duration-200 shadow-md text-lg"
+          aria-label="Favorite"
+        >
+          <span>♥ Favorite</span>
+        </button>
+
+        {/* Back button for Mobile (sm and below) - shows icon, half width */}
+        <button
+          onClick={handleBackToTable}
+          className="block md:hidden w-1/2 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition duration-200 shadow-md text-xl"
+          aria-label="Back"
+        >
+          <span>◄</span>
+        </button>
+
+        {/* Favorite button for Mobile (sm and below) - shows icon, half width */}
+        <button
+          onClick={handleOpenModal}
+          className="block md:hidden w-1/2 py-3 bg-red-500 text-white rounded-lg hover:bg-red-600 transition duration-200 shadow-md text-xl"
+          aria-label="Favorite"
+        >
+          <span>♥</span>
         </button>
       </div>
 
