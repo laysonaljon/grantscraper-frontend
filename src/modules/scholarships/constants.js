@@ -44,7 +44,7 @@ const headerConfig = [
       id: 'type',
       label: 'Type',
       type: 'dropdown',
-      options: ["Athletic", "Merit", "Need-based", "Grant"],
+      options: ["Art", "Athletic", "Grant", "Merit", "Need-based"],
       placeholder: 'Select Scholarship Type',
     },
   ]

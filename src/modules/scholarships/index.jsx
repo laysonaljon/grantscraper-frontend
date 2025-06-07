@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import Table from '../../components/table';
 import actions from './scholarship_actions';
 import constants from './constants';
@@ -9,19 +10,36 @@ const Scholarships = () => {
     const navigate = useNavigate();
     const scholarships = useSelector(state => state.scholarships.scholarships);
 
-    // Define the fetchData function
-    const fetchData = ({ sort, page, limit, filters }) => {
+    const [isLoading, setIsLoading] = useState(false);
+
+    const fetchData = async ({ sort, page, limit, filters }) => {
         const params = { sort, page, limit };
         
-        // Add filters to params if they exist
         if (filters && Object.keys(filters).length > 0) {
             params.filters = filters;
         }
 
-        dispatch(actions.getScholarships(params));
+        setIsLoading(true);
+
+        try {
+            await dispatch(actions.getScholarships(params)); 
+        } catch (error) {
+            console.error("Error fetching scholarships:", error);
+        } finally {
+            setIsLoading(false);
+        }
     };
 
-    // Handle row click to navigate to the scholarship details page
+    useEffect(() => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const initialSort = urlParams.get('sort') || 'deadline';
+        const initialFilters = urlParams.has('filters') 
+            ? JSON.parse(urlParams.get('filters')) 
+            : {};
+
+        fetchData({ sort: initialSort, page: 1, limit: 20, filters: initialFilters });
+    }, []);
+
     const handleRowClick = (scholarshipId) => {
         navigate(`/${scholarshipId}`);
     };
@@ -36,6 +54,7 @@ const Scholarships = () => {
             onRowClick={handleRowClick}
             sort='deadline'
             filters={constants.filterOptions}
+            isLoading={isLoading}
         />
     );
 };
