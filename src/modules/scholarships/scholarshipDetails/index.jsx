@@ -188,9 +188,15 @@ const ScholarshipDetails = () => {
                     day: '2-digit',
                   }).format(deadlineDate);
 
-                  return daysDifference > 0
-                    ? `${formattedDate} (${daysDifference} days to go)`
-                    : `${formattedDate} (Passed ${Math.abs(daysDifference)} days ago)`;
+                  if (daysDifference > 0) {
+                      return daysDifference === 1
+                        ? `${formattedDate} (${daysDifference} day to go)`
+                        : `${formattedDate} (${daysDifference} days to go)`;
+                  } else {
+                      return Math.abs(daysDifference) === 1
+                        ? `${formattedDate} (Passed ${Math.abs(daysDifference)} day ago)`
+                        : `${formattedDate} (Passed ${Math.abs(daysDifference)} days ago)`;
+                  }
                 })()}
           </p>
         </div>
