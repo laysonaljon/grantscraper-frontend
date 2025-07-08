@@ -11,7 +11,7 @@ const Scholarships = () => {
     const scholarships = useSelector(state => state.scholarships.scholarships);
 
     const [isLoading, setIsLoading] = useState(false);
-    const hasFetchedOnce = useRef(false);
+
 
     const fetchData = useCallback(async ({ sort, page, limit, filters }) => {
         const params = { sort, page, limit };
@@ -19,8 +19,6 @@ const Scholarships = () => {
         if (filters && Object.keys(filters).length > 0) {
             params.filters = filters;
         }
-        if (hasFetchedOnce.current) return;
-        hasFetchedOnce.current = true;
 
         setIsLoading(true);
 
