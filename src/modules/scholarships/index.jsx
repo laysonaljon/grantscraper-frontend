@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import Table from '../../components/table';
 import actions from './scholarship_actions';
 import constants from './constants';
@@ -11,13 +11,16 @@ const Scholarships = () => {
     const scholarships = useSelector(state => state.scholarships.scholarships);
 
     const [isLoading, setIsLoading] = useState(false);
+    const hasFetchedOnce = useRef(false);
 
-    const fetchData = async ({ sort, page, limit, filters }) => {
+    const fetchData = useCallback(async ({ sort, page, limit, filters }) => {
         const params = { sort, page, limit };
         
         if (filters && Object.keys(filters).length > 0) {
             params.filters = filters;
         }
+        if (hasFetchedOnce.current) return;
+        hasFetchedOnce.current = true;
 
         setIsLoading(true);
 
@@ -28,7 +31,7 @@ const Scholarships = () => {
         } finally {
             setIsLoading(false);
         }
-    };
+    }, [dispatch]);
 
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
@@ -38,7 +41,7 @@ const Scholarships = () => {
             : {};
 
         fetchData({ sort: initialSort, page: 1, limit: 20, filters: initialFilters });
-    }, []);
+    }, [fetchData]);
 
     const handleRowClick = (scholarshipId) => {
         navigate(`/${scholarshipId}`);
@@ -47,12 +50,12 @@ const Scholarships = () => {
     return (
         <Table
             fetchData={fetchData}
-            data={scholarships.items}
-            meta={scholarships.meta}
+            data={scholarships?.items || []}
+            meta={scholarships?.meta || {}}
             header={constants.headerConfig}
             title="Scholarships"
             onRowClick={handleRowClick}
-            sort='deadline'
+            sort="deadline"
             filters={constants.filterOptions}
             isLoading={isLoading}
         />
