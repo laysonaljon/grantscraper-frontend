@@ -3,31 +3,64 @@ import actionTypes from './scholarship_types';
 import api from '../../configuration/api';
 
 function* getScholarships(action) {
-  const response = yield call(api.getScholarships, action.params);
-  if (response.status === 200) {
+  try {
+    const response = yield call(api.getScholarships, action.params);
+    if (response.status === 200) {
+      yield put({
+        type: actionTypes.SET_SCHOLARSHIPS,
+        data: response.data,
+      });
+    }
+  } catch (error) {
+    console.error('Error fetching scholarships:', error);
     yield put({
-      type: actionTypes.SET_SCHOLARSHIPS,
-      data: response.data,
+      type: actionTypes.SET_ERROR,
+      payload: {
+        message: 'Failed to fetch scholarships. Please try again later.',
+        details: error.message
+      },
     });
   }
 }
 
 function* getScholarship(action) {
-  const response = yield call(api.getScholarship, action.scholarshipId);
-  if (response.status === 200) {
+  try {
+    const response = yield call(api.getScholarship, action.scholarshipId);
+    if (response.status === 200) {
+      yield put({
+        type: actionTypes.SET_SCHOLARSHIP,
+        data: response.data,
+      });
+    }
+  } catch (error) {
+    console.error('Error fetching scholarship:', error);
     yield put({
-      type: actionTypes.SET_SCHOLARSHIP,
-      data: response.data,
+      type: actionTypes.SET_ERROR,
+      payload: {
+        message: 'Failed to fetch scholarship details. Please try again later.',
+        details: error.message
+      },
     });
   }
 }
 
 function* addUserPreference(action) {
-  const response = yield call(api.addUserPreference, action.payload);
-  if (response.status === 200) {
+  try {
+    const response = yield call(api.addUserPreference, action.payload);
+    if (response.status === 200) {
+      yield put({
+        type: actionTypes.SET_MESSAGE,
+        data: response.data,
+      });
+    }
+  } catch (error) {
+    console.error('Error adding user preference:', error);
     yield put({
-      type: actionTypes.SET_MESSAGE,
-      data: response.data,
+      type: actionTypes.SET_ERROR,
+      payload: {
+        message: 'Failed to add preference. Please try again later.',
+        details: error.message
+      },
     });
   }
 }

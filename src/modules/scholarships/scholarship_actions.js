@@ -17,11 +17,22 @@ const addUserPreference = (email, level, type, scholarship_id) => ({
 
 const clearMessage = () => ({
   type: actionTypes.CLEAR_MESSAGE,
-}) 
+});
+
+const setError = (error) => ({
+  type: actionTypes.SET_ERROR,
+  payload: error,
+});
+
+const clearError = () => ({
+  type: actionTypes.CLEAR_ERROR,
+});
 
 export default {
   getScholarships,
   getScholarship,
   addUserPreference,
-  clearMessage
+  clearMessage,
+  setError,
+  clearError
 };

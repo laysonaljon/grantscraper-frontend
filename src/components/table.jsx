@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Filters from './filters';
 import Loading from './loading';
 
@@ -13,9 +13,19 @@ const Table = ({
   filters,
   isLoading,
 }) => {
-  const [sortKey, setSortKey] = useState(null);
+  // Initialize from URL params only once
+  const urlParams = new URLSearchParams(window.location.search);
+  const initialSortKey = urlParams.get('sort') || sort;
+  const initialFilters = urlParams.has('filters') 
+    ? JSON.parse(urlParams.get('filters')) 
+    : {};
+
+  const [sortKey, setSortKey] = useState(initialSortKey);
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedFilters, setSelectedFilters] = useState({});
+  const [selectedFilters, setSelectedFilters] = useState(initialFilters);
+
+  // Track last fetch params to avoid duplicate fetches
+  const lastFetchParams = useRef({});
 
   const updateURLParams = (params) => {
     const url = new URL(window.location);
@@ -35,25 +45,38 @@ const Table = ({
     window.history.pushState({}, '', url);
   };
 
+  // Only fetch on mount ONCE with initial params
   useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const initialSortKey = urlParams.get('sort') || sort;
-    setSortKey(initialSortKey);
-
-    const initialFilters = urlParams.has('filters') 
-      ? JSON.parse(urlParams.get('filters')) 
-      : {};
-
-    setSelectedFilters(initialFilters);
-
-    fetchData({ sort: initialSortKey, page: currentPage, limit: 20, filters: initialFilters });
+    const params = {
+      sort: sortKey,
+      page: currentPage,
+      limit: 20,
+      filters: selectedFilters,
+    };
+    fetchData(params);
+    lastFetchParams.current = params;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Fetch when sortKey, currentPage, or selectedFilters change (but not on initial mount)
   useEffect(() => {
-    if (sortKey !== null) {
-        fetchData({ sort: sortKey, page: currentPage, limit: 20, filters: selectedFilters });
-        updateURLParams({ sort: sortKey, filters: selectedFilters });
+    const params = {
+      sort: sortKey,
+      page: currentPage,
+      limit: 20,
+      filters: selectedFilters,
+    };
+    // Only fetch if params actually changed
+    const last = lastFetchParams.current;
+    const paramsChanged =
+      last.sort !== params.sort ||
+      last.page !== params.page ||
+      JSON.stringify(last.filters) !== JSON.stringify(params.filters);
+    if (paramsChanged) {
+      fetchData(params);
+      lastFetchParams.current = params;
     }
+    updateURLParams({ sort: sortKey, filters: selectedFilters });
   }, [sortKey, currentPage, selectedFilters]);
 
   const handleSort = (newSortKey) => {

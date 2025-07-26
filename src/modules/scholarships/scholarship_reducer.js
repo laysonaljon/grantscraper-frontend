@@ -8,7 +8,8 @@ const initialState = {
     message: {
         type:'',
         message:''
-    }
+    },
+    error: null
 };
 
 const scholarshipReducer = (state = initialState, action) => {
@@ -37,6 +38,7 @@ const scholarshipReducer = (state = initialState, action) => {
                     sortKey: action.data.meta.sortKey, // Ensure sortKey is updated
                 },
             },
+            error: null, // Clear error on successful response
         };
       }
       
@@ -47,7 +49,8 @@ const scholarshipReducer = (state = initialState, action) => {
               message: {
                 type:'',
                 message:''
-              }
+              },
+              error: null, // Clear error on successful response
             };
 
         case actionTypes.SET_MESSAGE: {
@@ -60,6 +63,18 @@ const scholarshipReducer = (state = initialState, action) => {
                 },
             };
         }
+
+        case actionTypes.SET_ERROR:
+            return {
+                ...state,
+                error: action.payload,
+            };
+
+        case actionTypes.CLEAR_ERROR:
+            return {
+                ...state,
+                error: null,
+            };
 
       default:
           return state;

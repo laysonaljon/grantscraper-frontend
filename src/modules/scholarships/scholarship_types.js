@@ -9,6 +9,10 @@ const actionTypes = {
     SET_SCHOLARSHIP: 'SET_SCHOLARSHIP',
     SET_MESSAGE: 'SET_MESSAGE',
     CLEAR_MESSAGE: 'CLEAR_MESSAGE',
+    
+    /* ERROR HANDLING */
+    SET_ERROR: 'SET_ERROR',
+    CLEAR_ERROR: 'CLEAR_ERROR',
   };
   
   export default actionTypes;
