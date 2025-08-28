@@ -14,7 +14,8 @@ const ScholarshipDetails = () => {
   const message = useSelector((state) => state.scholarships.message);
   const [isModalOpen, setModalOpen] = useState(false);
   const [isToastVisible, setToastVisible] = useState(false);
-  const [loading, setLoading] = useState(true); // Set initial loading state to true
+  const [scholarshipLoading, setScholarshipLoading] = useState(true); // Loading for scholarship data
+  const [subscriptionLoading, setSubscriptionLoading] = useState(false); // Loading for subscription
 
   function processRequirementText(text) {
     // Regex to extract only the href and link text from an anchor tag
@@ -44,19 +45,19 @@ const ScholarshipDetails = () => {
   }
 
   useEffect(() => {
-    setLoading(true); // Set loading to true when fetching new scholarship details
+    setScholarshipLoading(true); // Set loading to true when fetching new scholarship details
     dispatch(actions.getScholarship(scholarshipId));
   }, [dispatch, scholarshipId]);
 
   useEffect(() => {
     if (scholarship) {
-      setLoading(false); // Set loading to false once scholarship data is available
+      setScholarshipLoading(false); // Set loading to false once scholarship data is available
     }
   }, [scholarship]);
 
   useEffect(() => {
     if (message && message.message !== '') {
-      setLoading(false); // Also stop loading if a message (success/error) comes through
+      setSubscriptionLoading(false); // Stop subscription loading if a message comes through
       setToastVisible(true);
 
       if (message.type === 'success') {
@@ -71,8 +72,8 @@ const ScholarshipDetails = () => {
     }
   }, [message, dispatch]); // Added dispatch to dependency array
 
-  if (loading) {
-    return <Loading />; // Render the Loading component when loading is true
+  if (scholarshipLoading) {
+    return <Loading />; // Render the Loading component when scholarship is loading
   }
 
   // If scholarship is null after loading (e.g., ID not found), display a message
@@ -92,13 +93,13 @@ const ScholarshipDetails = () => {
   };
 
   const handleSubscribe = async (email) => {
-    setLoading(true); // Set loading to true when subscribing
+    setSubscriptionLoading(true); // Set subscription loading to true when subscribing
     try {
       dispatch(actions.addUserPreference(email, scholarship.level, scholarship.type, scholarshipId));
       // handleCloseModal is handled by the useEffect for messages
     } catch (error) {
       console.error("Subscription failed:", error);
-      setLoading(false); // Ensure loading is stopped even on error
+      setSubscriptionLoading(false); // Ensure loading is stopped even on error
     }
   };
 
@@ -333,7 +334,7 @@ const ScholarshipDetails = () => {
         isOpen={isModalOpen}
         onClose={handleCloseModal}
         onSubscribe={handleSubscribe}
-        loading={loading} // Pass loading state to Modal
+        loading={subscriptionLoading} // Pass subscription loading state to Modal
       />
 
       {/* Toast Notification */}
