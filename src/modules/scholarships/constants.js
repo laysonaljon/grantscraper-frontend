@@ -37,7 +37,7 @@ const headerConfig = [
       id: 'level',
       label: 'Level',
       type: 'dropdown',
-      options: ["Basic Education", "Vocational","College", "Doctorate", "Masters"],
+      options: ["Basic Education", "Vocational","College", "Masters", "Doctorate"],
       placeholder: 'Select Level of degree',
     },
     {
