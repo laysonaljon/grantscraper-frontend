@@ -345,6 +345,14 @@ const ScholarshipDetails = () => {
           onClose={() => setToastVisible(false)}
         />
       )}
+
+      {/* Disclaimer */}
+      <div className="p-4 bg-gray-300 dark:bg-gray-800 rounded-lg">
+        <p className="text-xs text-gray-600 dark:text-gray-400 text-center">
+          <strong>Disclaimer:</strong> This information is from third-party sources and may change at any time. 
+          Please verify all details directly with the scholarship provider. We are not liable for any inaccuracies or changes.
+        </p>
+      </div>
     </div>
   );
 };
