@@ -24,6 +24,14 @@ const headerConfig = [
     },
     {
       id: 4,
+      label:'Program',
+      minSize: '200px',
+      type: 'string',
+      sortKey: 'programs',
+      isDesktopOnly: true
+    },
+    {
+      id: 5,
       label:'Deadline',
       minSize: '250px',
       type: 'date',

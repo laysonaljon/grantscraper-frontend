@@ -178,7 +178,9 @@ const Table = ({
                             month: '2-digit',
                             day: '2-digit',
                           }).format(new Date(item[col.sortKey]))
-                      : item[col.sortKey]}
+                      : col.sortKey === 'programs'
+                        ? item[col.sortKey] || '-'
+                        : item[col.sortKey]}
                   </td>
                 ))}
               </tr>
